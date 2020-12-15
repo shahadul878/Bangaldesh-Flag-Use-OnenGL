@@ -1,0 +1,87 @@
+#include <windows.h>
+#ifdef _APPLE_
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+
+#include <stdlib.h>
+#include <math.h>
+
+#include <GL/gl.h>
+void CreateCircle()
+{
+	float x1, y1, x2, y2;
+	float angle;
+	double radius = 0.10;
+
+	x1 = 0.5, y1 = 0.65;
+	glColor3f(0.96, 0.16, 0.25);
+
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex2f(x1, y1);
+
+	for (angle = 1.0f; angle < 360.0f; angle += 0.2)
+	{
+		x2 = x1 + sin(angle) * radius;
+		y2 = y1 + cos(angle) * radius;
+		glVertex2f(x2, y2);
+	}
+
+	glEnd();
+}
+void display(void)
+{
+/* clear all pixels */
+glClear (GL_COLOR_BUFFER_BIT);
+/* draw white polygon (rectangle) with corners at
+* (0.25, 0.25, 0.0) and (0.75, 0.75, 0.0)
+*/
+glColor3f (0.00, 0.42, 0.3);
+glBegin(GL_POLYGON);
+glVertex3f (0.25, 0.50, 0.0);
+glVertex3f (0.75, 0.50, 0.0);
+glVertex3f (0.75, 0.80, 0.0);
+glVertex3f (0.25, 0.80, 0.0);
+glEnd();
+// Stripe
+glColor3f (0.47, 0.25, 0.09);
+glBegin(GL_POLYGON);
+glVertex3f (0.25, 0.25, 0.0);
+glVertex3f (0.28, 0.25, 0.0);
+glVertex3f (0.28, 0.85, 0.0);
+glVertex3f (0.25, 0.85, 0.0);
+glEnd();
+
+CreateCircle();
+/* don't wait!
+* start processing buffered OpenGL routines
+*/
+glFlush ();
+}
+void init (void)
+
+{
+/* select clearing (background) color */
+glClearColor (1.0, 1.0, 1.0, 0.0);
+/* initialize viewing values */
+glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
+}
+/*
+* Declare initial window size, position, and display mode
+*/
+int main(int argc, char** argv)
+{
+
+glutInit(&argc, argv);
+glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
+glutInitWindowSize (500, 500);
+glutInitWindowPosition (100, 100);
+glutCreateWindow ("Flag");
+init ();
+glutDisplayFunc(display);
+glutMainLoop();
+return 0;
+}
